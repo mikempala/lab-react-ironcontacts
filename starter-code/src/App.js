@@ -5,14 +5,27 @@ import contacts from './contacts.json'
 
 class App extends Component {
 
-  handleClick = (random) => {
-    this.setState({random});
+  randomClick = () => {
+    let { randomItems } = this.state;
+
+    let randomContact = contacts[Math.floor(Math.random() * contacts.length)];
+
+    randomItems.push(randomContact);
+    this.setState({ randomItems });
+  }
+
+  sortNameClick = () => {
+    let { randomItems } = this.state;
+
+    randomItems.sort();
+    this.setState({ randomItems });
   }
 
   constructor() {
     super();
     this.state = {
-      data: contacts.slice(0, 5)
+      initalData: contacts.slice(0, 5),
+      randomItems: [],
     }
   }
 
@@ -21,7 +34,8 @@ class App extends Component {
       <div className="App">
       <h1>IronContacts</h1>
 
-      <button>Add Random Contact</button>
+      <button onClick={this.randomClick}>Add Random Contact</button>
+      <button onClick={this.sortNameClick}>Sort by Name</button>
 
         <table>
           <tr>
@@ -30,7 +44,8 @@ class App extends Component {
             <th>Popularity</th>
           </tr>
 
-          {this.state.data.map((item, index) => <Item key={index} item={item} />)}
+          {this.state.initalData.map((item, index) => <Item key={index} item={item} />)}
+          {this.state.randomItems.map((item, index) => <Item key={index} item={item} />)}
 
         </table>
       </div>
