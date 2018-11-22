@@ -6,46 +6,56 @@ import contacts from './contacts.json'
 class App extends Component {
 
   randomClick = () => {
-    let { randomItems } = this.state;
+    let { data } = this.state;
 
     let randomContact = contacts[Math.floor(Math.random() * contacts.length)];
 
-    randomItems.push(randomContact);
-    this.setState({ randomItems });
+    data.push(randomContact);
+    this.setState({ data });
   }
 
   sortNameClick = () => {
-    let { randomItems } = this.state;
+    let { data } = this.state;
+    data.sort((a,b) => (a.name < b.name) ? -1 : 1 );
 
-    randomItems.sort();
-    this.setState({ randomItems });
+    this.setState({ data });
+  }
+
+  sortPopularityClick = () => {
+    let { data } = this.state;
+    data.sort((a,b) => b.popularity - a.popularity);
+
+    this.setState({ data });
   }
 
   constructor() {
     super();
     this.state = {
-      initalData: contacts.slice(0, 5),
-      randomItems: [],
+      data: contacts.slice(0, 5)
     }
   }
 
   render() {
     return (
       <div className="App">
-      <h1>IronContacts</h1>
+        <h1>IronContacts</h1>
 
-      <button onClick={this.randomClick}>Add Random Contact</button>
-      <button onClick={this.sortNameClick}>Sort by Name</button>
+        <button onClick={this.randomClick}>Add Random Contact</button>
+        <button onClick={this.sortNameClick}>Sort by Name</button>
+        <button onClick={this.sortPopularityClick}>Sort by Popularity</button>
 
         <table>
-          <tr>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Popularity</th>
-          </tr>
+          <thead>
+            <tr>
+              <th>Photo</th>
+              <th>Name</th>
+              <th>Popularity</th>
+            </tr>
+          </thead>
 
-          {this.state.initalData.map((item, index) => <Item key={index} item={item} />)}
-          {this.state.randomItems.map((item, index) => <Item key={index} item={item} />)}
+          <tbody>
+            {this.state.data.map((item, index) => <Item key={index} item={item} />)}
+          </tbody>
 
         </table>
       </div>
